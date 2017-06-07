@@ -454,25 +454,18 @@ public class QueryUtils {
             String mag, place;
             long time;
 
-//            Date dateObject = new Date();//"MMM DD, YYYY"
-//            DateFormat dateFormatter = new SimpleDateFormat().getDateTimeInstance();
-//            String dateToDisplay = null;
-
             for (int i = 0; i < jsonObject.getJSONArray("features").length(); i++){
                 mag = jsonObject.getJSONArray("features").getJSONObject(i).getJSONObject("properties").getString("mag");
                 place = jsonObject.getJSONArray("features").getJSONObject(i).getJSONObject("properties").getString("place");;
                 time = jsonObject.getJSONArray("features").getJSONObject(i).getJSONObject("properties").getLong("time");
-//                dateObject.setTime(time);
-//                dateToDisplay = dateFormatter.format(dateObject);
+
                 earthquakes.add(new Earthquake(mag, place, time));
 
-                Log.e(QueryUtils.class.getSimpleName(), "MAGNITUDE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! " + mag);
             }
 
             return earthquakes;
 
         } catch (JSONException e){
-            Log.e("QueryUtils", "DEEEU RUUUIM !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", e);
             return null;
         }
     }
