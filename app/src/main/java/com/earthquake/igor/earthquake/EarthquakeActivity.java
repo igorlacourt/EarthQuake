@@ -17,6 +17,7 @@ package com.earthquake.igor.earthquake;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -30,24 +31,35 @@ public class EarthquakeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.earthquake_activity);
 
-        // Create a fake list of earthquake locations.
-        ArrayList<Earthquake> earthquakes = new ArrayList<>();
-        earthquakes.add(new Earthquake("4.5", "San Francisco", "May, 25"));
-        earthquakes.add(new Earthquake("5.0", "London", "Jun, first"));
-        earthquakes.add(new Earthquake("5.2", "Tokyo", "Jun, first"));
-        earthquakes.add(new Earthquake("5.1", "Mexico City", "Jun, second"));
-        earthquakes.add(new Earthquake("7.0", "Moscow", "jun, second"));
-        earthquakes.add(new Earthquake("4.5", "Rio de Janeiro", "jun, second"));
-        earthquakes.add(new Earthquake("7.0", "Paris", "jun, first"));
+        EarthquakeAdapter adapter;
+
+        ArrayList<Earthquake> earthquakes;
 
         // Find a reference to the {@link ListView} in the layout
         ListView earthquakeListView = (ListView) findViewById(R.id.list);
 
         // Create a new {@link ArrayAdapter} of earthquakes
-        EarthquakeAdapter adapter = new EarthquakeAdapter(this, 0, earthquakes);
+        if(QueryUtils.extractEarthquake() != null){
+            earthquakes = QueryUtils.extractEarthquake();
+            adapter = new EarthquakeAdapter(this, 0, earthquakes);
+
+        } else {
+            // Create a fake list of earthquake locations.
+            earthquakes = new ArrayList<>();
+            earthquakes.add(new Earthquake("4.5", "BA, Brazil", "may, 27"));
+            earthquakes.add(new Earthquake("4.5", "Despacito", "may, 20"));
+            earthquakes.add(new Earthquake("5.1", "CA, USA", "jun, 27"));
+            earthquakes.add(new Earthquake("4.5", "Tokyo", "may, 27"));
+
+            adapter = new EarthquakeAdapter(this, 0, earthquakes);
+
+            Log.e("EarthquakeActivity", "EARTHQUAKES = " + QueryUtils.extractEarthquake());
+        }
+
+        earthquakeListView.setAdapter(adapter);
 
         // Set the adapter on the {@link ListView}
         // so the list can be populated in the user interface
-        earthquakeListView.setAdapter(adapter);
+
     }
 }
