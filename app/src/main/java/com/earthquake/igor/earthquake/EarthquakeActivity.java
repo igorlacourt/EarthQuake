@@ -46,10 +46,10 @@ public class EarthquakeActivity extends AppCompatActivity {
         } else {
             // Create a fake list of earthquake locations.
             earthquakes = new ArrayList<>();
-            earthquakes.add(new Earthquake("4.5", "BA, Brazil", "may, 27"));
-            earthquakes.add(new Earthquake("4.5", "Despacito", "may, 20"));
-            earthquakes.add(new Earthquake("5.1", "CA, USA", "jun, 27"));
-            earthquakes.add(new Earthquake("4.5", "Tokyo", "may, 27"));
+            earthquakes.add(new Earthquake("4.5", "BA, Brazil", 1111));
+            earthquakes.add(new Earthquake("4.5", "Despacito", 1111));
+            earthquakes.add(new Earthquake("5.1", "CA, USA", 1111));
+            earthquakes.add(new Earthquake("4.5", "Tokyo", 11111));
 
             adapter = new EarthquakeAdapter(this, 0, earthquakes);
 

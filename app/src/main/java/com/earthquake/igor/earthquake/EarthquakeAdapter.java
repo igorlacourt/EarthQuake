@@ -10,6 +10,11 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.FieldPosition;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,6 +22,9 @@ import java.util.List;
  */
 
 public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
+
+    private Date dateObj = new Date();
+    private DateFormat dateFormat = new SimpleDateFormat().getDateTimeInstance();
 
     public EarthquakeAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull List<Earthquake> objects) {
         super(context, resource, objects);
@@ -39,7 +47,8 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
         location.setText(currentEarthquake.getmLocation());
 
         TextView date = (TextView)convertView.findViewById(R.id.date);
-        date.setText(currentEarthquake.getmDate());
+        dateObj.setTime(currentEarthquake.getmDate());
+        date.setText(dateFormat.format(dateObj));
 
         return convertView;
     }
