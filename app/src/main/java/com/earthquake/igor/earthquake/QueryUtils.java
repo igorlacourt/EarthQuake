@@ -155,7 +155,7 @@ public class QueryUtils {
                 "      {  \n" +
                 "         \"type\":\"Feature\",\n" +
                 "         \"properties\":{  \n" +
-                "            \"mag\":5,\n" +
+                "            \"mag\":9,\n" +
                 "            \"place\":\"73km NNE of Calama, Chile\",\n" +
                 "            \"time\":1496528504320,\n" +
                 "            \"updated\":1496771186040,\n" +
@@ -451,15 +451,16 @@ public class QueryUtils {
             JSONObject jsonObject = new JSONObject(JASON_SIMPLE_RESULT);
 
             earthquakes = new ArrayList<>();
-            String mag, place;
+            String mag, place, url;
             long time;
 
             for (int i = 0; i < jsonObject.getJSONArray("features").length(); i++){
                 mag = jsonObject.getJSONArray("features").getJSONObject(i).getJSONObject("properties").getString("mag");
                 place = jsonObject.getJSONArray("features").getJSONObject(i).getJSONObject("properties").getString("place");;
                 time = jsonObject.getJSONArray("features").getJSONObject(i).getJSONObject("properties").getLong("time");
+                url = jsonObject.getJSONArray("features").getJSONObject(i).getJSONObject("properties").getString("url");
 
-                earthquakes.add(new Earthquake(mag, place, time));
+                earthquakes.add(new Earthquake(mag, place, time, url));
 
             }
 

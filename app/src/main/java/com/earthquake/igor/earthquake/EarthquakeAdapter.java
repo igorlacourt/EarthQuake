@@ -1,9 +1,12 @@
 package com.earthquake.igor.earthquake;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.util.TimeUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.FieldPosition;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
@@ -45,8 +49,13 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
         Earthquake currentEarthquake = getItem(position);
 
         TextView magnitude = (TextView)convertView.findViewById(R.id.magnitude);
-        magnitude.setText(currentEarthquake.getmMagnitude());
+        magnitude.setText(magnitudeFormat(Double.parseDouble(currentEarthquake.getmMagnitude())));
 
+        //Get the circle shape and change it's color
+        GradientDrawable magnitudeCircle = (GradientDrawable) magnitude.getBackground();
+        magnitudeCircle.setColor(getMagnitudeColor(Double.parseDouble(currentEarthquake.getmMagnitude())));
+
+        //Split string in two parts
         splitPlaceString(currentEarthquake, convertView);
 
         dateObj.setTime(currentEarthquake.getmDate());
@@ -56,12 +65,12 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
 
         TextView time = (TextView)convertView.findViewById(R.id.time);
         time.setText(formatTime(dateObj));
+
         return convertView;
     }
 
     private void splitPlaceString(Earthquake currentEarthquake, View convertView){
         String str = currentEarthquake.getmLocation();
-        Log.e(Earthquake.class.getSimpleName(), "STR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!: " + str);
 
         if (str.contains("of")) {
             // Split it.
@@ -79,6 +88,44 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
             TextView location = (TextView)convertView.findViewById(R.id.location);
             location.setText(str);
         }
+    }
+
+    public int getMagnitudeColor(double magnitude){
+
+        int intMagFloor = (int)Math.floor(magnitude);
+
+        int colorResId = R.color.magnitude10plus;
+
+        switch (intMagFloor){
+            case 0:  colorResId = R.color.magnitude1;
+                break;
+            case 1: colorResId = R.color.magnitude1;
+                break;
+            case 2: colorResId = R.color.magnitude3;
+                break;
+            case 3: colorResId = R.color.magnitude4;
+                break;
+            case 4: colorResId = R.color.magnitude5;
+                break;
+            case 5: colorResId = R.color.magnitude6;
+                break;
+            case 6: colorResId = R.color.magnitude7;
+                break;
+            case 7: colorResId = R.color.magnitude8;
+                break;
+            case 9: colorResId = R.color.magnitude9;
+                break;
+            default: colorResId = R.color.magnitude10plus;
+                break;
+        }
+
+        //Returns the color integer using the resource ID integer
+        return ContextCompat.getColor(getContext(), colorResId);
+    }
+
+    private String magnitudeFormat(double magnitude){
+        DecimalFormat decimalFormat = new DecimalFormat("0.0");
+        return decimalFormat.format(magnitude);
     }
 
     private String formatTime(Date dateObject){

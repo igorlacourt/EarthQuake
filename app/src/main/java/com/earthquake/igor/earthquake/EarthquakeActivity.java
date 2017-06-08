@@ -15,9 +15,13 @@
  */
 package com.earthquake.igor.earthquake;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -37,7 +41,14 @@ public class EarthquakeActivity extends AppCompatActivity {
 
         // Find a reference to the {@link ListView} in the layout
         ListView earthquakeListView = (ListView) findViewById(R.id.list);
-
+        earthquakeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Earthquake currentEarthquake = (Earthquake) parent.getItemAtPosition(position);
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(currentEarthquake.getUrl()));
+                startActivity(browserIntent);
+            }
+        });
         // Create a new {@link ArrayAdapter} of earthquakes
         if(QueryUtils.extractEarthquake() != null){
             earthquakes = QueryUtils.extractEarthquake();
@@ -46,10 +57,10 @@ public class EarthquakeActivity extends AppCompatActivity {
         } else {
             // Create a fake list of earthquake locations.
             earthquakes = new ArrayList<>();
-            earthquakes.add(new Earthquake("4.5", "BA, Brazil", 1111));
-            earthquakes.add(new Earthquake("4.5", "Despacito", 1111));
-            earthquakes.add(new Earthquake("5.1", "CA, USA", 1111));
-            earthquakes.add(new Earthquake("4.5", "Tokyo", 11111));
+            earthquakes.add(new Earthquake("4.5", "BA, Brazil", 1111, "http://www.google.com"));
+            earthquakes.add(new Earthquake("4.5", "Despacito", 1111, "http://www.google.com"));
+            earthquakes.add(new Earthquake("5.1", "CA, USA", 1111, "http://www.google.com"));
+            earthquakes.add(new Earthquake("4.5", "Tokyo", 11111, "http://www.google.com"));
 
             adapter = new EarthquakeAdapter(this, 0, earthquakes);
 
